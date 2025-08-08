@@ -1,11 +1,9 @@
-// API KEY = 
 
-// import CONFIG from "./config.js";
-// console.log(CONFIG.API_KEY);
 const input = document.getElementById('searchInput');
 const results = document.getElementById('results');
 const details = document.getElementById('details');
-const API_KEY = '73f2b765'; 
+const HASH = 'NzNmMmI3NjU='; 
+const API_KEY = atob(HASH); 
 
 input.addEventListener('input', async () => {
   const query = input.value.trim();

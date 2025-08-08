@@ -4,20 +4,20 @@
 // console.log(CONFIG.API_KEY);
 const input = document.getElementById('searchInput');
 const results = document.getElementById('results');
-const details = document.getElementById('details');
-const API_KEY = '73f2b765'; 
+const loading = document.getElementById('loading');
+const searchForm = document.getElementById('searchForm');
+const API_KEY = '73f2b765';
 
-input.addEventListener('input', async () => {
-  const query = input.value.trim();
-  details.innerHTML = ''; 
+async function searchMovies(query) {
+  results.innerHTML = '';
   if (!query) {
-    results.innerHTML = '';
+    loading.style.display = 'none';
     return;
   }
-
+  loading.style.display = 'block';
   const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`);
   const data = await response.json();
-
+  loading.style.display = 'none';
   if (data.Search) {
     results.innerHTML = data.Search.map(movie => `
       <div class="movie" data-id="${movie.imdbID}">
@@ -31,24 +31,22 @@ input.addEventListener('input', async () => {
   } else {
     results.innerHTML = '<p>No results found.</p>';
   }
+}
+
+// Trigger search on form submit
+searchForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  searchMovies(input.value.trim());
 });
 
 // Click handler for movie cards
-results.addEventListener('click', async (e) => {
+results.addEventListener('click', (e) => {
   const movieCard = e.target.closest('.movie');
   if (!movieCard) return;
-
   const imdbID = movieCard.getAttribute('data-id');
-  const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${imdbID}`);
-  const movie = await response.json();
+  window.location.href = `details.html?id=${imdbID}`;
+});
 
-  details.innerHTML = `
-    <h2>${movie.Title} (${movie.Year})</h2>
-    <img src="${movie.Poster !== 'N/A' ? movie.Poster : ''}" alt="${movie.Title}" height="200">
-    <p><strong>Genre:</strong> ${movie.Genre}</p>
-    <p><strong>Director:</strong> ${movie.Director}</p>
-    <p><strong>Actors:</strong> ${movie.Actors}</p>
-    <p><strong>Plot:</strong> ${movie.Plot}</p>
-    <p><strong>IMDb Rating:</strong> ${movie.imdbRating}</p>
-  `;
+input.addEventListener('input', () => {
+  searchMovies(input.value.trim());
 });

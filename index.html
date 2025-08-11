@@ -21,6 +21,40 @@
     </section>
     <section id="results" aria-live="polite"></section>
     
+    <section id="section2">
+      <div class="section2-header">
+        <div>
+        <h2>🎥 Top-Rated Movies </h2>
+        </div>
+        <div class="filter">
+          <select id="filterSelect">
+            <option value="" selected disabled>Filter movies</option>
+              <option value="ratings">Ratings</option>
+              <option value="year">Year</option>
+              <option value="none">Reset</option>
+            </select>
+
+            <div id="ratingsFilter" class="filter-control" style="display: none;">
+              <label for="ratingRange">Minimum Rating:</label>
+              <input type="range" id="ratingRange" min="0" max="10" step="0.1" value="7">
+              <span id="ratingValue">7</span>
+            </div>
+
+            <div id="yearFilter" class="filter-control" style="display: none;">
+              <label for="yearSelect">Select Year:</label>
+              <select id="yearSelect">
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+              </select>
+            </div>
+          </select>
+        </div>
+      </div>
+      <div id="recommendSection"></div>
+    </section>
+
   </main>
   <script src="script.js"></script>
 </body>

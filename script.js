@@ -1,4 +1,3 @@
-
 const input = document.getElementById('searchInput');
 const results = document.getElementById('results');
 const loading = document.getElementById('loading');
@@ -110,86 +109,51 @@ window.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
-
-
-// Update rating display
-ratingRange.addEventListener('input', () => {
-  ratingValue.textContent = ratingRange.value;
-});
-
-// Handle filter selection
-filterSelect.addEventListener('change', () => {
-  const selected = filterSelect.value;
-
-  ratingsFilter.style.display = selected === 'ratings' ? 'block' : 'none';
-  yearFilter.style.display = selected === 'year' ? 'block' : 'none';
-
-  if (selected === 'none') {
-    recommend.innerHTML = '<p>🎬 Loading latest movies...</p>';
-    loadMovies('2024');
-  }
-});
-
-// Filter by rating
-ratingRange.addEventListener('change', () => {
-  const minRating = parseFloat(ratingRange.value);
-  recommend.innerHTML = `<p>🎯 Filtering movies with rating ≥ ${minRating}...</p>`;
-  loadMovies('2024', minRating);
-});
-
-// Filter by year
-yearSelect.addEventListener('change', () => {
-  const selectedYear = yearSelect.value;
-  recommend.innerHTML = `<p>📅 Loading movies from ${selectedYear}...</p>`;
-  loadMovies(selectedYear);
-});
-
-// Reusable movie loader with optional rating filter
-async function loadMovies(year = '2024', minRating = 0) {
+// Fetch and display movies for the selected year
+async function fetchMoviesByYear(year) {
+  recommend.innerHTML = '<p>🎬 Loading movies...</p>';
   try {
-    let allMovies = [];
-    let page = 1;
-    let hasMore = 5;
+    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=movie&y=${year}`);
+    const data = await response.json();
 
-    while (page <= hasMore) {
-      const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${year}&y=${year}&page=${page}`);
-      const data = await response.json();
-
-      if (data.Search && data.Search.length > 0) {
-        allMovies = allMovies.concat(data.Search);
-        page++;
-      } else {
-        hasMore = false;
-      }
+    if (!data.Search) {
+      recommend.innerHTML = '<p>😕 No movies found for the selected year.</p>';
+      return;
     }
 
     const detailedMovies = await Promise.all(
-      allMovies.map(async movie => {
+      data.Search.map(async movie => {
         const res = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${movie.imdbID}`);
         return await res.json();
       })
     );
 
-    const filteredMovies = detailedMovies
-      .filter(m => m.imdbRating && parseFloat(m.imdbRating) >= minRating)
+    const sortedMovies = detailedMovies
+      .filter(m => m.imdbRating && !isNaN(parseFloat(m.imdbRating)))
       .sort((a, b) => parseFloat(b.imdbRating) - parseFloat(a.imdbRating));
 
-    recommend.innerHTML = filteredMovies.length > 0
-      ? filteredMovies.map(movie => `
+    recommend.innerHTML = sortedMovies.length > 0
+      ? sortedMovies.map(movie => `
           <div class="recommendSection" data-id="${movie.imdbID}">
-            <div class="movie" data-id="${movie.imdbID}">
-              <img src="${movie.Poster !== 'N/A' ? movie.Poster : ''}" alt="${movie.Title}" height="100">
-              <div>
-                <h3>${movie.Title}</h3>
-                <p>Rating: ${movie.imdbRating}</p>
-                <p>Year: ${movie.Year}</p>
-              </div>
+            <div class="movie">
+              <img src="${movie.Poster !== 'N/A' ? movie.Poster : ''}" alt="${movie.Title}" />
+              <h3>${movie.Title}</h3>
+              <p>Rating: ${movie.imdbRating}</p>
+              <p>Year: ${movie.Year}</p>
             </div>
           </div>
         `).join('')
-      : '<p>😐 No movies match your filter.</p>';
+      : '<p>😐 No top-rated movies found for the selected year.</p>';
   } catch (error) {
     recommend.innerHTML = '<p>⚠️ Error loading movies.</p>';
     console.error(error);
   }
 }
+
+// Event listener for year selection
+yearSelect.addEventListener('change', () => {
+  const selectedYear = yearSelect.value;
+  fetchMoviesByYear(selectedYear);
+});
+
+

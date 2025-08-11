@@ -27,28 +27,15 @@
         <h2>🎥 Top-Rated Movies </h2>
         </div>
         <div class="filter">
-          <select id="filterSelect">
-            <option value="" selected disabled>Filter movies</option>
-              <option value="ratings">Ratings</option>
-              <option value="year">Year</option>
-              <option value="none">Reset</option>
-            </select>
-
-            <div id="ratingsFilter" class="filter-control" style="display: none;">
-              <label for="ratingRange">Minimum Rating:</label>
-              <input type="range" id="ratingRange" min="0" max="10" step="0.1" value="7">
-              <span id="ratingValue">7</span>
-            </div>
-
-            <div id="yearFilter" class="filter-control" style="display: none;">
-              <label for="yearSelect">Select Year:</label>
-              <select id="yearSelect">
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-              </select>
-            </div>
+          <label for="yearSelect"></label>
+          <select id="yearSelect">
+            <option value="" selected disabled>Choose a year</option>
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+            <option value="2019">2019</option>
           </select>
         </div>
       </div>

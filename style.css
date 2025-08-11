@@ -328,7 +328,44 @@ button[type="submit"]:hover {
   box-shadow: 0 4px 16px rgba(198, 137, 198, 0.18);
 }
 
+#loading {
+  display: none;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #3D1766;
+  position: relative;
+}
 
+#loading::after {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  border: 2px solid #3D1766;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
 
 @media (max-width: 600px) {
   .container {
@@ -347,3 +384,51 @@ button[type="submit"]:hover {
     margin-right: 0;
   }
 }
+/* 
+.carousel {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.carousel-track-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+  gap: 16px;
+}
+
+.carousel-track li {
+  list-style: none;
+  flex: 0 0 33.33%; /* Ensure exactly 3 items fit */
+  /* max-width: 33.33%;
+  box-sizing: border-box; /* Include padding and borders in width */
+  /* margin: 0;
+} */
+
+/* .carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%); */
+  /* background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.carousel-btn.prev {
+  left: 10px;
+}
+
+.carousel-btn.next {
+  right: 10px;
+} */ 

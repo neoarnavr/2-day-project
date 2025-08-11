@@ -328,7 +328,44 @@ button[type="submit"]:hover {
   box-shadow: 0 4px 16px rgba(198, 137, 198, 0.18);
 }
 
+#loading {
+  display: none;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #3D1766;
+  position: relative;
+}
 
+#loading::after {
+  content: '';
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  border: 2px solid #3D1766;
+  border-top: 2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
 
 @media (max-width: 600px) {
   .container {

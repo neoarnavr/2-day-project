@@ -1,4 +1,5 @@
-const API_KEY = '73f2b765';
+const HASH = 'MTNhMjJhZTA='; 
+const API_KEY = atob(HASH); 
 const details = document.getElementById('details');
 
 function getImdbID() {

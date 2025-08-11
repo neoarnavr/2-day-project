@@ -14,7 +14,7 @@ const ratingRange = document.getElementById('ratingRange');
 const ratingValue = document.getElementById('ratingValue');
 const yearSelect = document.getElementById('yearSelect');
 
-const HASH = 'NzNmMmI3NjU='; 
+const HASH = 'MTNhMjJhZTA='; 
 const API_KEY = atob(HASH); 
 
 async function searchMovies(query) {
